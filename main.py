@@ -127,7 +127,7 @@ class GuildState:
         )
 
 
-state = defaultdict(GuildState)
+state: defaultdict[int, GuildState] = defaultdict(GuildState)
 
 
 def get_guild_state(interaction: discord.Interaction) -> GuildState:
@@ -145,10 +145,13 @@ def load():
     try:
         with open("state.json", "r") as infile:
             global state
-            state = {
-                int(guild_id): GuildState.deserialize(int(guild_id), value)
-                for guild_id, value in json.load(infile).items()
-            }
+            state = defaultdict(
+                GuildState,
+                {
+                    int(guild_id): GuildState.deserialize(int(guild_id), value)
+                    for guild_id, value in json.load(infile).items()
+                },
+            )
             logging.info(f"Loaded state for {len(state)} guild(s)")
     except FileNotFoundError:
         logging.info("No state found")
