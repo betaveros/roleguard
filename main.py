@@ -72,7 +72,7 @@ T = TypeVar("T")
 
 
 def assert_not_none(x: T | None, msg: str) -> T:
-    assert x is not None
+    assert x is not None, msg
     return x
 
 
