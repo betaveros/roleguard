@@ -71,7 +71,7 @@ def check_password_hash(password: str, salted_hash: tuple[bytes, bytes]):
 T = TypeVar("T")
 
 
-def assert_not_none(x: T | None) -> T:
+def assert_not_none(x: T | None, msg: str) -> T:
     assert x is not None
     return x
 
@@ -104,21 +104,25 @@ class GuildState:
 
     @classmethod
     def deserialize(cls, guild_id: int, obj):
-        guild = assert_not_none(client.get_guild(guild_id))
+        guild = assert_not_none(client.get_guild(guild_id), f"No {guild_id=}")
         guards_obj, pws_obj = obj
         return cls(
             guards=defaultdict(
                 set,
                 {
                     int(member_id): {
-                        assert_not_none(guild.get_role(int(role_id)))
+                        assert_not_none(
+                            guild.get_role(int(role_id)), f"{guild=} has no {role_id=}"
+                        )
                         for role_id in role_ids
                     }
                     for member_id, role_ids in guards_obj.items()
                 },
             ),
             password_hashes={
-                assert_not_none(guild.get_role(int(role_id))): (
+                assert_not_none(
+                    guild.get_role(int(role_id)), f"{guild=} has no {role_id=}"
+                ): (
                     base64.b64decode(salt.encode("ascii")),
                     base64.b64decode(pw.encode("ascii")),
                 )
