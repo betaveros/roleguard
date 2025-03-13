@@ -12,6 +12,15 @@ The simplest and easiest-to-understand thing to do would be to set the password 
 
 One downside is that then people can then use the bot for (arbitrarily many) extra answer guesses. If you want to avoid that, or if this scheme doesn't work for any other reason, you could say that the password is something else that only teams who finish have access to, e.g. "the first sentence in the body of the victory page".
 
+## permissions
+
+According to my notes, the bot needs these permissions:
+
+- Manage Roles
+- Read Messages
+- Send Messages
+- Use Application Commands (Slash Commands)
+
 ## TODO
 
 - `/listguards`
